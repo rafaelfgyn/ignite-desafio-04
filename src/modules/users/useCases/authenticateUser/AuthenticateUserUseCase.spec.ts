@@ -1,4 +1,3 @@
-import { AppError } from '../../../../shared/errors/AppError';
 import { InMemoryUsersRepository } from '../../repositories/in-memory/InMemoryUsersRepository';
 import { CreateUserUseCase } from '../createUser/CreateUserUseCase'
 import { AuthenticateUserUseCase } from './AuthenticateUserUseCase';
@@ -30,6 +29,24 @@ describe('Create User', () => {
     })
 
     expect(payload).toHaveProperty('token')
+  })
+
+  it('should not authenticate a user with wrong email', async () => {
+
+    await createUserUseCase.execute({
+      name: 'nameTest',
+      email: 'emailTest',
+      password: '123'
+    })
+
+    expect(async () => {
+
+      await authenticateUserUseCase.execute({
+        email: 'wrongEmail',
+        password: '123'
+      })
+
+    }).rejects.toBeInstanceOf(IncorrectEmailOrPasswordError)
   })
 
   it('should not authenticate a user with wrong password', async () => {
