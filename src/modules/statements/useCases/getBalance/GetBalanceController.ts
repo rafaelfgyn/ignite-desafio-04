@@ -5,7 +5,9 @@ import { BalanceMap } from '../../mappers/BalanceMap';
 import { GetBalanceUseCase } from './GetBalanceUseCase';
 
 export class GetBalanceController {
+
   async execute(request: Request, response: Response) {
+    
     const { id: user_id } = request.user;
 
     const getBalance = container.resolve(GetBalanceUseCase);
