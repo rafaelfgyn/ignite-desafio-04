@@ -40,7 +40,7 @@ describe("Create satement", () => {
       amount: 10,
       description: "Test"
     }).set({
-      Authorization: `Baerer ${token}`
+      Authorization: `Bearer ${token}`
     })
 
     expect(response.statusCode).toEqual(201)
@@ -60,7 +60,7 @@ describe("Create satement", () => {
       amount: 5,
       description: "Test"
     }).set({
-      Authorization: `Baerer ${token}`
+      Authorization: `Bearer ${token}`
     })
     expect(response.statusCode).toEqual(201)
     expect(response.body).toHaveProperty("id")
