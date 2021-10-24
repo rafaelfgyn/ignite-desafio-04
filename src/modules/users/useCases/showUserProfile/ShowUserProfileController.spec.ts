@@ -1,14 +1,14 @@
-import { app } from '../../../../app';
 import { hash } from 'bcryptjs';
-import createConnection from '../../../../database/index';
 import request from 'supertest';
 import { Connection } from "typeorm";
 import { v4 as uuid } from 'uuid';
+import { app } from '../../../../app';
+import createConnection from '../../../../database/index';
 
 let connection: Connection
 let user_id: string
 
-describe("Create satement", () => {
+describe("Get statement operation", () => {
   beforeAll(async () => {
     connection = await createConnection()
     await connection.runMigrations()
@@ -28,7 +28,7 @@ describe("Create satement", () => {
     await connection.close()
   })
 
-  it("Should be able to get balance", async () => {
+  it("Should be able get user profile", async () => {
     const responseToken = await request(app).post('/api/v1/sessions').send({
       email: "admin@admin.com.br",
       password: "admin"
@@ -36,10 +36,11 @@ describe("Create satement", () => {
 
     const { token } = responseToken.body
 
-    const response = await request(app).get('/api/v1/statements/balance').set({
-      Authorization: `Baerer ${token}`
+    const response = await request(app).get('/api/v1/profile').set({
+      Authorization: `Bearer ${token}`
     })
 
     expect(response.statusCode).toEqual(200)
+    expect(response.body).toHaveProperty('id')
   })
 })

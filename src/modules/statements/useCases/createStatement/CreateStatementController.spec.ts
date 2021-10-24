@@ -44,9 +44,25 @@ describe("Create satement", () => {
     })
 
     expect(response.statusCode).toEqual(201)
-
   })
 
+  it("Should be able to create a deposit statement", async () => {
+    const responseToken = await request(app).post('/api/v1/sessions').send({
+      email: "admin@admin.com.br",
+      password: "admin"
+    })
+
+    const { token } = responseToken.body
+
+    const response = await request(app).post('/api/v1/statements/deposit').send({
+      amount: 5,
+      description: "Test"
+    }).set({
+      Authorization: `Bearer ${token}`
+    })
+    expect(response.statusCode).toEqual(201)
+    expect(response.body).toHaveProperty("id")
+  })
 
   it("Should be able to create a withdraw statement", async () => {
     const responseToken = await request(app).post('/api/v1/sessions').send({
